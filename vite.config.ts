@@ -24,9 +24,9 @@ export default defineConfig({
       start_url: '/',
       icons: [
         {
-          src: '/pwa.jpg',
-          sizes: '192x192',
-          type: 'image/jpg',
+          src: '/vite.svg',
+          sizes: 'any',
+          type: 'image/svg+xml',
         },
         // {
         //   src: '/pwa-512x512.png',
