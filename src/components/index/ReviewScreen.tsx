@@ -50,7 +50,7 @@ export function ReviewScreen({
       case '2-strip':
         return (
           <div className={`w-full h-full ${backgroundClass} rounded-lg p-4 flex flex-col gap-4`}>
-            {photos.slice(0, 2).map((photo, i) => (
+            {photos.slice(0, 2).map((_, i) => (
               <div 
                 key={i}
                 className="flex-1 bg-blue-400 rounded cursor-pointer hover:ring-4 hover:ring-yellow-400 transition-all flex items-center justify-center text-white"
@@ -65,7 +65,7 @@ export function ReviewScreen({
       case '4-strip':
         return (
           <div className={`w-full h-full ${backgroundClass} rounded-lg p-4 flex flex-col gap-2`}>
-            {photos.slice(0, 4).map((photo, i) => (
+            {photos.slice(0, 4).map((_, i) => (
               <div 
                 key={i}
                 className="flex-1 bg-blue-400 rounded cursor-pointer hover:ring-4 hover:ring-yellow-400 transition-all flex items-center justify-center text-white text-sm"
@@ -80,7 +80,7 @@ export function ReviewScreen({
       case 'collage':
         return (
           <div className={`w-full h-full ${backgroundClass} rounded-lg p-4 grid grid-cols-2 gap-2`}>
-            {photos.slice(0, 4).map((photo, i) => (
+            {photos.slice(0, 4).map((_, i) => (
               <div 
                 key={i}
                 className="bg-blue-400 rounded cursor-pointer hover:ring-4 hover:ring-yellow-400 transition-all flex items-center justify-center text-white text-sm"

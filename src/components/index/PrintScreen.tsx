@@ -59,7 +59,7 @@ export function PrintScreen({
       case '2-strip':
         return (
           <div className={`w-full h-full ${backgroundClass} rounded-lg p-4 flex flex-col gap-4`}>
-            {photos.slice(0, 2).map((photo, i) => (
+            {photos.slice(0, 2).map((_, i) => (
               <div 
                 key={i}
                 className="flex-1 bg-gradient-to-br from-blue-400 to-blue-600 rounded flex items-center justify-center text-white shadow-inner"
@@ -73,7 +73,7 @@ export function PrintScreen({
       case '4-strip':
         return (
           <div className={`w-full h-full ${backgroundClass} rounded-lg p-4 flex flex-col gap-2`}>
-            {photos.slice(0, 4).map((photo, i) => (
+            {photos.slice(0, 4).map((_, i) => (
               <div 
                 key={i}
                 className="flex-1 bg-gradient-to-br from-blue-400 to-blue-600 rounded flex items-center justify-center text-white text-sm shadow-inner"
@@ -87,7 +87,7 @@ export function PrintScreen({
       case 'collage':
         return (
           <div className={`w-full h-full ${backgroundClass} rounded-lg p-4 grid grid-cols-2 gap-2`}>
-            {photos.slice(0, 4).map((photo, i) => (
+            {photos.slice(0, 4).map((_, i) => (
               <div 
                 key={i}
                 className="bg-gradient-to-br from-blue-400 to-blue-600 rounded flex items-center justify-center text-white text-sm shadow-inner"
