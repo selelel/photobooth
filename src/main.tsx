@@ -37,3 +37,17 @@ if (!rootElement.innerHTML) {
     </StrictMode>,
   )
 }
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js')
+  })
+}
+
+
+// import { registerSW } from 'virtual:pwa-register'
+
+// const updateSW = registerSW({
+//   onNeedRefresh() {},
+//   onOfflineReady() {},
+// })
