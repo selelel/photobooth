@@ -13,6 +13,7 @@ export default defineConfig({
     autoCodeSplitting: true,
   }), 
   VitePWA({
+    injectRegister: 'auto',
     registerType: 'autoUpdate',
     manifest: {
       name: 'Photobooth',
