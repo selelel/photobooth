@@ -84,7 +84,7 @@ export function CaptureScreen({
           onPhotoCapture(updatedPhotos, currentPhotoIndex + 1);
         }
       } catch (err) {
-        // eslint-disable-next-line no-console
+         
         console.error("Failed to capture image:", err);
         setIsCapturing(false);
         setCountdown(null);

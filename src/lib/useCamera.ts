@@ -55,7 +55,7 @@ export function useCamera(): UseCameraResult {
       setIsActive(true)
       setError(null)
     } catch (err) {
-      // eslint-disable-next-line no-console
+       
       console.error('Failed to start camera:', err)
       setError(err instanceof Error ? err.message : 'Failed to start camera')
       setIsActive(false)

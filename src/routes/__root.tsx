@@ -1,3 +1,4 @@
+import { Toaster } from '@/components/ui/sonner'
 import { useCamera } from '@/lib/useCamera'
 import { createRootRoute, Outlet } from '@tanstack/react-router'
 import { useEffect } from 'react'
@@ -22,6 +23,7 @@ const RootLayout = () => {
     </div>
     <hr /> */}
     <Outlet />
+    <Toaster />
     {/* <TanStackRouterDevtools /> */}
   </>
 )}

@@ -1,4 +1,4 @@
-import App from '@/components/index/app'
+import MarketingPage from '@/components/index/marketing-page'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/')({
@@ -7,6 +7,6 @@ export const Route = createFileRoute('/')({
 
 function Index() {
   return (
-    <App />
+    <MarketingPage />
   )
 }
