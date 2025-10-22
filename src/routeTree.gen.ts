@@ -13,6 +13,7 @@ import { Route as SignupRouteImport } from './routes/signup'
 import { Route as SigninRouteImport } from './routes/signin'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as TestEditorRouteImport } from './routes/test/editor'
 import { Route as TestCameraRouteImport } from './routes/test/camera'
 
 const SignupRoute = SignupRouteImport.update({
@@ -35,6 +36,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TestEditorRoute = TestEditorRouteImport.update({
+  id: '/test/editor',
+  path: '/test/editor',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TestCameraRoute = TestCameraRouteImport.update({
   id: '/test/camera',
   path: '/test/camera',
@@ -47,6 +53,7 @@ export interface FileRoutesByFullPath {
   '/signin': typeof SigninRoute
   '/signup': typeof SignupRoute
   '/test/camera': typeof TestCameraRoute
+  '/test/editor': typeof TestEditorRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -54,6 +61,7 @@ export interface FileRoutesByTo {
   '/signin': typeof SigninRoute
   '/signup': typeof SignupRoute
   '/test/camera': typeof TestCameraRoute
+  '/test/editor': typeof TestEditorRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -62,13 +70,33 @@ export interface FileRoutesById {
   '/signin': typeof SigninRoute
   '/signup': typeof SignupRoute
   '/test/camera': typeof TestCameraRoute
+  '/test/editor': typeof TestEditorRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/dashboard' | '/signin' | '/signup' | '/test/camera'
+  fullPaths:
+    | '/'
+    | '/dashboard'
+    | '/signin'
+    | '/signup'
+    | '/test/camera'
+    | '/test/editor'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/dashboard' | '/signin' | '/signup' | '/test/camera'
-  id: '__root__' | '/' | '/dashboard' | '/signin' | '/signup' | '/test/camera'
+  to:
+    | '/'
+    | '/dashboard'
+    | '/signin'
+    | '/signup'
+    | '/test/camera'
+    | '/test/editor'
+  id:
+    | '__root__'
+    | '/'
+    | '/dashboard'
+    | '/signin'
+    | '/signup'
+    | '/test/camera'
+    | '/test/editor'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -77,6 +105,7 @@ export interface RootRouteChildren {
   SigninRoute: typeof SigninRoute
   SignupRoute: typeof SignupRoute
   TestCameraRoute: typeof TestCameraRoute
+  TestEditorRoute: typeof TestEditorRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -109,6 +138,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/test/editor': {
+      id: '/test/editor'
+      path: '/test/editor'
+      fullPath: '/test/editor'
+      preLoaderRoute: typeof TestEditorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/test/camera': {
       id: '/test/camera'
       path: '/test/camera'
@@ -125,6 +161,7 @@ const rootRouteChildren: RootRouteChildren = {
   SigninRoute: SigninRoute,
   SignupRoute: SignupRoute,
   TestCameraRoute: TestCameraRoute,
+  TestEditorRoute: TestEditorRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
