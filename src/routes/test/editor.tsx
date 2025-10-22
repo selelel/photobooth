@@ -117,74 +117,74 @@ const Picture = ({
   );
 };
 
-const Rectangle = ({
-  shapeProps,
-  isSelected,
-  onSelect,
-  onChange,
-}: {
-  shapeProps: RectangleShape;
-  isSelected: boolean;
-  onSelect: () => void;
-  onChange: (newAttrs: RectangleShape) => void;
-}) => {
-  const shapeRef = useRef<Konva.Rect>(null);
-  const trRef = useRef<Konva.Transformer>(null);
+// const Rectangle = ({
+//   shapeProps,
+//   isSelected,
+//   onSelect,
+//   onChange,
+// }: {
+//   shapeProps: RectangleShape;
+//   isSelected: boolean;
+//   onSelect: () => void;
+//   onChange: (newAttrs: RectangleShape) => void;
+// }) => {
+//   const shapeRef = useRef<Konva.Rect>(null);
+//   const trRef = useRef<Konva.Transformer>(null);
 
-  useEffect(() => {
-    if (isSelected && trRef.current && shapeRef.current) {
-      trRef.current.nodes([shapeRef.current]);
-      trRef.current.getLayer()?.batchDraw();
-    }
-  }, [isSelected]);
+//   useEffect(() => {
+//     if (isSelected && trRef.current && shapeRef.current) {
+//       trRef.current.nodes([shapeRef.current]);
+//       trRef.current.getLayer()?.batchDraw();
+//     }
+//   }, [isSelected]);
 
-  return (
-    <React.Fragment>
-      <Rect
-        onClick={onSelect}
-        onTap={onSelect}
-        ref={shapeRef}
-        {...shapeProps}
-        draggable
-        onDragEnd={(e) => {
-          onChange({
-            ...shapeProps,
-            x: e.target.x(),
-            y: e.target.y(),
-          });
-        }}
-        onTransformEnd={() => {
-          const node = shapeRef.current;
-          if (!node) return;
-          const scaleX = node.scaleX();
-          const scaleY = node.scaleY();
+//   return (
+//     <React.Fragment>
+//       <Rect
+//         onClick={onSelect}
+//         onTap={onSelect}
+//         ref={shapeRef}
+//         {...shapeProps}
+//         draggable
+//         onDragEnd={(e) => {
+//           onChange({
+//             ...shapeProps,
+//             x: e.target.x(),
+//             y: e.target.y(),
+//           });
+//         }}
+//         onTransformEnd={() => {
+//           const node = shapeRef.current;
+//           if (!node) return;
+//           const scaleX = node.scaleX();
+//           const scaleY = node.scaleY();
 
-          node.scaleX(1);
-          node.scaleY(1);
-          onChange({
-            ...shapeProps,
-            x: node.x(),
-            y: node.y(),
-            width: Math.max(5, node.width() * scaleX),
-            height: Math.max(5, node.height() * scaleY),
-          });
-        }}
-      />
-      {isSelected && (
-        <Transformer
-          ref={trRef}
-          flipEnabled={false}
-          boundBoxFunc={(oldBox, newBox) => {
-            if (Math.abs(newBox.width) < 5 || Math.abs(newBox.height) < 5) {
-              return oldBox;
-            }
-            return newBox;
-          }}
-        />
-      )}
-    </React.Fragment>
-  );
-};
+//           node.scaleX(1);
+//           node.scaleY(1);
+//           onChange({
+//             ...shapeProps,
+//             x: node.x(),
+//             y: node.y(),
+//             width: Math.max(5, node.width() * scaleX),
+//             height: Math.max(5, node.height() * scaleY),
+//           });
+//         }}
+//       />
+//       {isSelected && (
+//         <Transformer
+//           ref={trRef}
+//           flipEnabled={false}
+//           boundBoxFunc={(oldBox, newBox) => {
+//             if (Math.abs(newBox.width) < 5 || Math.abs(newBox.height) < 5) {
+//               return oldBox;
+//             }
+//             return newBox;
+//           }}
+//         />
+//       )}
+//     </React.Fragment>
+//   );
+// };
 
 // 🪄 Custom hook for loading images
 export function useImage(url: string | null) {
@@ -220,17 +220,17 @@ interface LogoProps {
   draggable?: boolean;
 }
 
-const Logo = ({ src, x, y, draggable = false }: LogoProps) => {
-  const [image] = useImage(src);
-  return (
-    <Image
-      image={image as unknown as CanvasImageSource}
-      x={x}
-      y={y}
-      draggable={draggable}
-    />
-  );
-};
+// const Logo = ({ src, x, y, draggable = false }: LogoProps) => {
+//   const [image] = useImage(src);
+//   return (
+//     <Image
+//       image={image as unknown as CanvasImageSource}
+//       x={x}
+//       y={y}
+//       draggable={draggable}
+//     />
+//   );
+// };
 
 // 🧭 Route definition
 export const Route = createFileRoute('/test/editor')({
@@ -258,7 +258,7 @@ function RouteComponent() {
     { id: 'rect-2', x: 360, y: 220, width: 160, height: 100, fill: '#66ccff' },
   ];
 
-  const [rectangles, setRectangles] = React.useState<RectangleShape[]>(initialRectangles);
+//   const [rectangles, setRectangles] = React.useState<RectangleShape[]>(initialRectangles);
   const [selectedId, selectShape] = React.useState<string | null>(null);
 
   const initialPictures: PictureShape[] = [
@@ -318,7 +318,7 @@ function RouteComponent() {
     },
 ];
 
-const backgroundImage= { id: 'pic-4', x: 0, y: 0, width: 900, height: 600, src: '/kirby.png', label: 'Guest One' }
+// const backgroundImage= { id: 'pic-4', x: 0, y: 0, width: 900, height: 600, src: '/kirby.png', label: 'Guest One' }
 
   const [pictures, setPictures] = React.useState<PictureShape[]>(() => {
     const seen = new Map<string, number>();
