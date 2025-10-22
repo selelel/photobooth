@@ -9,7 +9,7 @@ const KStage = Stage as unknown as React.ComponentType<any>;
 const KLayer = Layer as unknown as React.ComponentType<any>;
 const KGroup = Group as unknown as React.ComponentType<any>;
 
-type RectangleShape = Konva.RectConfig & { id: string };
+// type RectangleShape = Konva.RectConfig & { id: string };
 type PictureShape = { id: string; x: number; y: number; width: number; height: number; src?: string; label?: string; bgColor?: string };
 
 const Picture = ({
@@ -213,12 +213,12 @@ export function useImage(url: string | null) {
 }
 
 // 🧩 Logo component for rendering draggable images
-interface LogoProps {
-  src: string;
-  x: number;
-  y: number;
-  draggable?: boolean;
-}
+// interface LogoProps {
+//   src: string;
+//   x: number;
+//   y: number;
+//   draggable?: boolean;
+// }
 
 // const Logo = ({ src, x, y, draggable = false }: LogoProps) => {
 //   const [image] = useImage(src);
@@ -253,10 +253,10 @@ function RouteComponent() {
     }
   };
 
-  const initialRectangles: RectangleShape[] = [
-    { id: 'rect-1', x: 120, y: 120, width: 180, height: 120, fill: '#ffcc00' },
-    { id: 'rect-2', x: 360, y: 220, width: 160, height: 100, fill: '#66ccff' },
-  ];
+//   const initialRectangles: RectangleShape[] = [
+//     { id: 'rect-1', x: 120, y: 120, width: 180, height: 120, fill: '#ffcc00' },
+//     { id: 'rect-2', x: 360, y: 220, width: 160, height: 100, fill: '#66ccff' },
+//   ];
 
 //   const [rectangles, setRectangles] = React.useState<RectangleShape[]>(initialRectangles);
   const [selectedId, selectShape] = React.useState<string | null>(null);
