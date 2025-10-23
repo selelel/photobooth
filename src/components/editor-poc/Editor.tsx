@@ -7,7 +7,10 @@ import {
   DEFAULT_BACKGROUND_COLOR, 
   GRID_MARGIN,
   MIN_SHAPE_SIZE,
-  INITIAL_PICTURES_LANDSCAPE_4
+  INITIAL_PICTURES_LANDSCAPE_4,
+  INITIAL_PICTURES_LANDSCAPE_3,
+  INITIAL_PICTURES_LANDSCAPE_2,
+  INITIAL_PICTURES_LANDSCAPE_1,
 } from './constants';
 import type { PictureShape } from './constants';
 
@@ -19,11 +22,12 @@ export const Editor = () => {
   const [bgColor, setBgColor] = useState(DEFAULT_BACKGROUND_COLOR);
   const stageRef = useRef<any>(null);
   const [selectedId, selectShape] = React.useState<string | null>(null);
+  const [image, setImage] = useState<Base64URLString | null>()
 
   const [pictures, setPictures] = React.useState<PictureShape[]>(() => {
     const seen = new Map<string, number>();
   
-    return [...(INITIAL_PICTURES_LANDSCAPE_4.map((p) => {
+    return [...(INITIAL_PICTURES_LANDSCAPE_1.map((p) => {
       const count = seen.get(p.id) ?? 0;
       seen.set(p.id, count + 1);
   
@@ -38,7 +42,7 @@ export const Editor = () => {
   const handleExport = () => {
     if (stageRef.current) {
       const uri = stageRef.current.toDataURL({ pixelRatio: 2 });
-      console.log(uri); // TODO: upload to Supabase or print
+      setImage(uri); // TODO: upload to Supabase or print
     } else {
       console.warn('Stage reference is not set.');
     }
@@ -95,7 +99,7 @@ export const Editor = () => {
   };
 
   return (
-    <div className='flex justify-between'>
+    <div className='flex justify-between gap-6'>
       <KStage 
         className="border-2 border-black w-fit" 
         width={PAPER_WIDTH} 
@@ -106,7 +110,6 @@ export const Editor = () => {
       >
         <KLayer>
           <Rect width={PAPER_WIDTH} height={PAPER_HEIGHT} fill={bgColor} />
-          <Text text="Mama mo" x={50} y={50} draggable={true} />
           <Picture
               key={pictures[0].id}
               shapeProps={pictures[0]}
@@ -134,7 +137,7 @@ export const Editor = () => {
         <div>
             <input
                 type="color"
-                value={bgColor}
+                value={'bgColor'}
                 onChange={(e) => setBgColor(e.target.value)}
                 className="m-2"
                 />
@@ -155,6 +158,7 @@ export const Editor = () => {
 
         <div>
             <p>{JSON.stringify(pictures, null, 2)}</p>
+            {image && <img src={image} className='w-full'/>}
         </div>
       </div>
     </div>  

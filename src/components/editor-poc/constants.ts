@@ -3,7 +3,7 @@ export const PAPER_WIDTH = 900;
 export const PAPER_HEIGHT = 600;
 
 // Default background color
-export const DEFAULT_BACKGROUND_COLOR = '#ffffff';
+export const DEFAULT_BACKGROUND_COLOR = '#d28383';
 
 // Initial pictures configuration
 export const INITIAL_PICTURES_LANDSCAPE_5 = [
@@ -64,9 +64,18 @@ export const INITIAL_PICTURES_LANDSCAPE_5 = [
 ];
 
 export const INITIAL_PICTURES_LANDSCAPE_4 = [
-  { "id": "pic-1", "x": 426, "y": 43, "width": 445, "height": 294, "src": "/test.jpg", "label": "Guest One" }, { "id": "pic-4", "x": 27, "y": 359, "width": 260, "height": 172, "src": "/test.jpg", "label": "Guest One" }, { "id": "pic-5", "x": 320, "y": 359, "width": 260, "height": 172, "src": "/test.jpg", "label": "Guest One" }, { "id": "pic-6", "x": 613, "y": 359, "width": 260, "height": 172, "src": "/test.jpg", "label": "Guest One" }
+  { "id": "pic-1", "x": 20, "y": 375, "width": 273, "height": 197, "src": "/test.jpg", "label": "Guest One" },
+  { "id": "pic-2", "x": 313, "y": 375, "width": 273, "height": 197, "src": "/test.jpg", "label": "Guest One" },
+  { "id": "pic-3", "x": 607, "y": 375, "width": 273, "height": 197, "src": "/test.jpg", "label": "Guest One" },
+  { "id": "pic-4", "x": 420, "y": 28, "width": 458, "height": 330, "src": "/test.jpg", "label": "Guest One" }
 ];
 
+export const INITIAL_PICTURES_LANDSCAPE_3 = [ { "id": "pic-1", "x": 20, "y": 202, "width": 273, "height": 197, "src": "/test.jpg", "label": "Guest One" }, { "id": "pic-2", "x": 314, "y": 202, "width": 273, "height": 197, "src": "/test.jpg", "label": "Guest One" }, { "id": "pic-3", "x": 607, "y": 202, "width": 273, "height": 197, "src": "/test.jpg", "label": "Guest One" } ]
+
+export const INITIAL_PICTURES_LANDSCAPE_2 = [ 
+  { "id": "pic-2", "x": 20, "y": 144, "width": 420, "height": 311, "src": "/test.jpg", "label": "Guest One" }, { "id": "pic-2-2", "x": 460, "y": 144, "width": 420, "height": 311, "src": "/test.jpg", "label": "Guest One" }]
+
+  export const INITIAL_PICTURES_LANDSCAPE_1 = [ { "id": "pic-2", "x": 95, "y": 37, "width": 710, "height": 526, "src": "/test.jpg", "label": "Guest One" } ]
 // Picture shape type
 export type PictureShape = { 
   id: string;                               
