@@ -4,6 +4,7 @@ import type Konva from 'konva';
 import { useImage } from './useImage';
 import { DEFAULT_PICTURE_WIDTH, DEFAULT_PICTURE_HEIGHT, DEFAULT_PICTURE_BG_COLOR } from './constants';
 import type { PictureShape } from './constants';
+import { calculateSnapPosition, type BoundingBox } from './snappingUtils';
 
 // Relaxed component aliases to avoid JSX typing conflicts from react-konva types
 const KGroup = Group as unknown as React.ComponentType<any>;
@@ -13,6 +14,9 @@ interface PictureProps {
   isSelected: boolean;
   onSelect: () => void;
   onChange: (newAttrs: PictureShape) => void;
+  otherShapes?: PictureShape[];
+  enableSnapping?: boolean;
+  onSnapChange?: (snapResult: any) => void;
 }
 
 export const Picture = ({
@@ -20,6 +24,9 @@ export const Picture = ({
   isSelected,
   onSelect,
   onChange,
+  otherShapes = [],
+  enableSnapping = true,
+  onSnapChange,
 }: PictureProps) => {
   const groupRef = useRef<Konva.Group>(null);
   const trRef = useRef<Konva.Transformer>(null);
@@ -55,10 +62,39 @@ export const Picture = ({
         onClick={onSelect}
         onTap={onSelect}
         onDragEnd={(e: any) => {
+          let newX = e.target.x();
+          let newY = e.target.y();
+          
+          if (enableSnapping) {
+            // Convert other shapes to bounding boxes for snapping calculation
+            const otherBoundingBoxes: BoundingBox[] = otherShapes
+              .filter(shape => shape.id !== shapeProps.id)
+              .map(shape => ({
+                x: shape.x,
+                y: shape.y,
+                width: shape.width,
+                height: shape.height,
+              }));
+            
+            // Calculate snap position
+            const snapResult = calculateSnapPosition(
+              { x: newX, y: newY, width, height },
+              otherBoundingBoxes
+            );
+            
+            newX = snapResult.x;
+            newY = snapResult.y;
+            
+            // Notify parent about snap result for alignment guides
+            if (onSnapChange) {
+              onSnapChange(snapResult);
+            }
+          }
+          
           onChange({
             ...shapeProps,
-            x: e.target.x(),
-            y: e.target.y(),
+            x: newX,
+            y: newY,
           });
         }}
         onTransformEnd={() => {

@@ -1,17 +1,16 @@
 import React, { useState, useRef } from 'react';
-import { Stage, Layer, Rect, Text } from 'react-konva';
+import { Stage, Layer, Rect } from 'react-konva';
 import { Picture } from './Picture';
+import { EditorGuides } from './EditorGuides';
+import { AlignmentGuides } from './AlignmentGuides';
 import { 
   PAPER_WIDTH, 
   PAPER_HEIGHT, 
   DEFAULT_BACKGROUND_COLOR, 
   GRID_MARGIN,
   MIN_SHAPE_SIZE,
-  INITIAL_PICTURES_LANDSCAPE_4,
-  INITIAL_PICTURES_LANDSCAPE_3,
-  INITIAL_PICTURES_LANDSCAPE_2,
-  INITIAL_PICTURES_LANDSCAPE_1,
-  INITIAL_PICTURES_PORTRAIT_5,
+  INITIAL_PICTURES_PORTRAIT_3,
+  INITIAL_PICTURES_PORTRAIT_2,
 } from './constants';
 import type { PictureShape } from './constants';
 
@@ -23,12 +22,16 @@ export const Editor = () => {
   const [bgColor, setBgColor] = useState(DEFAULT_BACKGROUND_COLOR);
   const stageRef = useRef<any>(null);
   const [selectedId, selectShape] = React.useState<string | null>(null);
-  const [image, setImage] = useState<Base64URLString | null>()
+  const [image, setImage] = useState<Base64URLString | null>();
+  const [showGrid, setShowGrid] = useState(true);
+  const [showMargins, setShowMargins] = useState(true);
+  const [enableSnapping, setEnableSnapping] = useState(true);
+  const [alignmentGuides, setAlignmentGuides] = useState<{ vertical?: number; horizontal?: number }>({});
 
   const [pictures, setPictures] = React.useState<PictureShape[]>(() => {
     const seen = new Map<string, number>();
   
-    return [...(INITIAL_PICTURES_PORTRAIT_5.map((p) => {
+    return [...(INITIAL_PICTURES_PORTRAIT_2.map((p) => {
       const count = seen.get(p.id) ?? 0;
       seen.set(p.id, count + 1);
   
@@ -96,7 +99,12 @@ export const Editor = () => {
     const clickedOnEmpty = e.target === e.target.getStage();
     if (clickedOnEmpty) {
       selectShape(null);
+      setAlignmentGuides({}); // Clear alignment guides when deselecting
     }
+  };
+
+  const handleSnapChange = (snapResult: any) => {
+    setAlignmentGuides(snapResult.alignmentGuides || {});
   };
 
   return (
@@ -111,6 +119,17 @@ export const Editor = () => {
       >
         <KLayer>
           <Rect width={PAPER_WIDTH} height={PAPER_HEIGHT} fill={bgColor} />
+          
+          {/* Editor guides (grid and margins) */}
+          <EditorGuides showGrid={showGrid} showMargins={showMargins} />
+          
+          {/* Alignment guides for snapping feedback */}
+          <AlignmentGuides 
+            verticalGuide={alignmentGuides.vertical}
+            horizontalGuide={alignmentGuides.horizontal}
+            showGuides={enableSnapping}
+          />
+          
           <Picture
               key={pictures[0].id}
               shapeProps={pictures[0]}
@@ -119,6 +138,9 @@ export const Editor = () => {
               onChange={(newAttrs) => {
                 setPictures((prev) => prev.map((p) => (p.id === pictures[0].id ? { ...p, ...newAttrs } : p)));
               }}
+              otherShapes={pictures.filter((p) => p.id !== pictures[0].id)}
+              enableSnapping={enableSnapping}
+              onSnapChange={handleSnapChange}
             />
           
           {(pictures.filter((e) => e.id !== "pic-background")).map((pic) => (
@@ -130,31 +152,55 @@ export const Editor = () => {
               onChange={(newAttrs) => {
                 setPictures((prev) => prev.map((p) => (p.id === pic.id ? { ...p, ...newAttrs } : p)));
               }}
+              otherShapes={pictures.filter((p) => p.id !== pic.id)}
+              enableSnapping={enableSnapping}
+              onSnapChange={handleSnapChange}
             />
           ))}
         </KLayer>
       </KStage>
       <div className='flex flex-1 flex-col gap-2'>
-        <div>
+        <div className="space-y-4">
+          <div className="flex flex-wrap gap-2">
             <input
-                type="color"
-                value={'bgColor'}
-                onChange={(e) => setBgColor(e.target.value)}
-                className="m-2"
-                />
-                <button onClick={handleExport} className="p-2 bg-gray-200 rounded">
-                    Save Template
-                </button>
-                <button 
-                    onClick={() => distributeEvenly(2)} 
-                    className="ml-2 p-2 bg-gray-200 rounded">
-                    Distribute Evenly
-                </button>
-                <button 
-                    onClick={() => getPosition()} 
-                    className="ml-2 p-2 bg-gray-200 rounded">
-                    Get Images Position
-                </button>
+              type="color"
+              value={bgColor}
+              onChange={(e) => setBgColor(e.target.value)}
+              className="w-12 h-8 rounded border"
+              title="Background Color"
+            />
+            <button onClick={handleExport} className="px-3 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+              Save Template
+            </button>
+            <button 
+              onClick={() => distributeEvenly(2)} 
+              className="px-3 py-2 bg-green-500 text-white rounded hover:bg-green-600">
+              Distribute Evenly
+            </button>
+            <button 
+              onClick={() => getPosition()} 
+              className="px-3 py-2 bg-gray-500 text-white rounded hover:bg-gray-600">
+              Get Images Position
+            </button>
+          </div>
+          
+          <div className="flex flex-wrap gap-2">
+            <button 
+              onClick={() => setShowGrid(!showGrid)} 
+              className={`px-3 py-2 rounded ${showGrid ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}>
+              {showGrid ? 'Hide Grid' : 'Show Grid'}
+            </button>
+            <button 
+              onClick={() => setShowMargins(!showMargins)} 
+              className={`px-3 py-2 rounded ${showMargins ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}>
+              {showMargins ? 'Hide Margins' : 'Show Margins'}
+            </button>
+            <button 
+              onClick={() => setEnableSnapping(!enableSnapping)} 
+              className={`px-3 py-2 rounded ${enableSnapping ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}>
+              {enableSnapping ? 'Disable Snapping' : 'Enable Snapping'}
+            </button>
+          </div>
         </div>
 
         <div>
