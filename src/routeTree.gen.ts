@@ -15,6 +15,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
 import { Route as TestEditorRouteImport } from './routes/test/editor'
 import { Route as TestCameraRouteImport } from './routes/test/camera'
+import { Route as DashboardTemplateCreationRouteImport } from './routes/dashboard/template-creation'
 
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
@@ -46,11 +47,18 @@ const TestCameraRoute = TestCameraRouteImport.update({
   path: '/test/camera',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DashboardTemplateCreationRoute =
+  DashboardTemplateCreationRouteImport.update({
+    id: '/dashboard/template-creation',
+    path: '/dashboard/template-creation',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/signin': typeof SigninRoute
   '/signup': typeof SignupRoute
+  '/dashboard/template-creation': typeof DashboardTemplateCreationRoute
   '/test/camera': typeof TestCameraRoute
   '/test/editor': typeof TestEditorRoute
   '/dashboard': typeof DashboardIndexRoute
@@ -59,6 +67,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/signin': typeof SigninRoute
   '/signup': typeof SignupRoute
+  '/dashboard/template-creation': typeof DashboardTemplateCreationRoute
   '/test/camera': typeof TestCameraRoute
   '/test/editor': typeof TestEditorRoute
   '/dashboard': typeof DashboardIndexRoute
@@ -68,6 +77,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/signin': typeof SigninRoute
   '/signup': typeof SignupRoute
+  '/dashboard/template-creation': typeof DashboardTemplateCreationRoute
   '/test/camera': typeof TestCameraRoute
   '/test/editor': typeof TestEditorRoute
   '/dashboard/': typeof DashboardIndexRoute
@@ -78,6 +88,7 @@ export interface FileRouteTypes {
     | '/'
     | '/signin'
     | '/signup'
+    | '/dashboard/template-creation'
     | '/test/camera'
     | '/test/editor'
     | '/dashboard'
@@ -86,6 +97,7 @@ export interface FileRouteTypes {
     | '/'
     | '/signin'
     | '/signup'
+    | '/dashboard/template-creation'
     | '/test/camera'
     | '/test/editor'
     | '/dashboard'
@@ -94,6 +106,7 @@ export interface FileRouteTypes {
     | '/'
     | '/signin'
     | '/signup'
+    | '/dashboard/template-creation'
     | '/test/camera'
     | '/test/editor'
     | '/dashboard/'
@@ -103,6 +116,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   SigninRoute: typeof SigninRoute
   SignupRoute: typeof SignupRoute
+  DashboardTemplateCreationRoute: typeof DashboardTemplateCreationRoute
   TestCameraRoute: typeof TestCameraRoute
   TestEditorRoute: typeof TestEditorRoute
   DashboardIndexRoute: typeof DashboardIndexRoute
@@ -152,6 +166,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TestCameraRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dashboard/template-creation': {
+      id: '/dashboard/template-creation'
+      path: '/dashboard/template-creation'
+      fullPath: '/dashboard/template-creation'
+      preLoaderRoute: typeof DashboardTemplateCreationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -159,6 +180,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   SigninRoute: SigninRoute,
   SignupRoute: SignupRoute,
+  DashboardTemplateCreationRoute: DashboardTemplateCreationRoute,
   TestCameraRoute: TestCameraRoute,
   TestEditorRoute: TestEditorRoute,
   DashboardIndexRoute: DashboardIndexRoute,
