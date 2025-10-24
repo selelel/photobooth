@@ -11,6 +11,7 @@ import {
   INITIAL_PICTURES_LANDSCAPE_3,
   INITIAL_PICTURES_LANDSCAPE_2,
   INITIAL_PICTURES_LANDSCAPE_1,
+  INITIAL_PICTURES_PORTRAIT_5,
 } from './constants';
 import type { PictureShape } from './constants';
 
@@ -27,7 +28,7 @@ export const Editor = () => {
   const [pictures, setPictures] = React.useState<PictureShape[]>(() => {
     const seen = new Map<string, number>();
   
-    return [...(INITIAL_PICTURES_LANDSCAPE_1.map((p) => {
+    return [...(INITIAL_PICTURES_PORTRAIT_5.map((p) => {
       const count = seen.get(p.id) ?? 0;
       seen.set(p.id, count + 1);
   
@@ -145,7 +146,7 @@ export const Editor = () => {
                     Save Template
                 </button>
                 <button 
-                    onClick={() => distributeEvenly()} 
+                    onClick={() => distributeEvenly(2)} 
                     className="ml-2 p-2 bg-gray-200 rounded">
                     Distribute Evenly
                 </button>

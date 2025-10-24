@@ -1,6 +1,6 @@
 // Paper dimensions and editor constants
-export const PAPER_WIDTH = 900;
-export const PAPER_HEIGHT = 600;
+export const PAPER_WIDTH = 600;
+export const PAPER_HEIGHT = 900;
 
 // Default background color
 export const DEFAULT_BACKGROUND_COLOR = '#d28383';
@@ -62,6 +62,13 @@ export const INITIAL_PICTURES_LANDSCAPE_5 = [
     label: "Guest One"
   }
 ];
+
+export const INITIAL_PICTURES_PORTRAIT_5 = [
+  { "id": "pic-1", "x": 25, "y": 30, "width": 260, "height": 172, "src": "/test.jpg", "label": "Photo Booth" },
+  { "id": "pic-2", "x": 315, "y": 30, "width": 260, "height": 172, "src": "/test.jpg", "label": "Guest One" }, 
+  { "id": "pic-3", "x": 25, "y": 275, "width": 260, "height": 172, "src": "/test.jpg", "label": "Guest One" },
+  { "id": "pic-4", "x": 315, "y": 275, "width": 260, "height": 172, "src": "/test.jpg", "label": "Guest One" }, 
+  { "id": "pic-5", "x": 25, "y": 657, "width": 260, "height": 172, "src": "/test.jpg", "label": "Guest One" }]
 
 export const INITIAL_PICTURES_LANDSCAPE_4 = [
   { "id": "pic-1", "x": 20, "y": 375, "width": 273, "height": 197, "src": "/test.jpg", "label": "Guest One" },
