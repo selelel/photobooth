@@ -1,6 +1,6 @@
 // Paper dimensions and editor constants
-export const PAPER_WIDTH = 600;
-export const PAPER_HEIGHT = 900;
+export const PAPER_WIDTH = 900;
+export const PAPER_HEIGHT = 600;
 
 // Default background color
 export const DEFAULT_BACKGROUND_COLOR = '#d28383';

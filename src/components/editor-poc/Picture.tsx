@@ -97,21 +97,22 @@ export const Picture = ({
             y: newY,
           });
         }}
-        onTransformEnd={() => {
-          const node = groupRef.current;
-          if (!node) return;
-          const scaleX = node.scaleX();
-          const scaleY = node.scaleY();
-          node.scaleX(1);
-          node.scaleY(1);
-          onChange({
-            ...shapeProps,
-            x: node.x(),
-            y: node.y(),
-            width: Math.max(5, width * scaleX),
-            height: Math.max(5, height * scaleY),
-          });
-        }}
+        // TODO: How This Work?
+        // onTransformEnd={() => {
+        //   const node = groupRef.current;
+        //   if (!node) return;
+        //   const scaleX = node.scaleX();
+        //   const scaleY = node.scaleY();
+        //   node.scaleX(1);
+        //   node.scaleY(1);
+        //   onChange({
+        //     ...shapeProps,
+        //     x: node.x(),
+        //     y: node.y(),
+        //     width: Math.max(5, width * scaleX),
+        //     height: Math.max(5, height * scaleY),
+        //   });
+        // }}
       >
         {loadedImage ? (
           <Image

@@ -1,4 +1,4 @@
-import DashboardPage from '@/components/dashboard/dashboard'
+import { Editor } from '@/components/dashboard/template-creation'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/dashboard/template-creation')({
@@ -6,5 +6,5 @@ export const Route = createFileRoute('/dashboard/template-creation')({
 })
 
 function RouteComponent() {
-  return <DashboardPage />
+  return <Editor />
 }

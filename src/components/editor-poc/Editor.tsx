@@ -9,7 +9,6 @@ import {
   DEFAULT_BACKGROUND_COLOR, 
   GRID_MARGIN,
   MIN_SHAPE_SIZE,
-  INITIAL_PICTURES_PORTRAIT_3,
   INITIAL_PICTURES_PORTRAIT_2,
 } from './constants';
 import type { PictureShape } from './constants';
@@ -28,20 +27,7 @@ export const Editor = () => {
   const [enableSnapping, setEnableSnapping] = useState(true);
   const [alignmentGuides, setAlignmentGuides] = useState<{ vertical?: number; horizontal?: number }>({});
 
-  const [pictures, setPictures] = React.useState<PictureShape[]>(() => {
-    const seen = new Map<string, number>();
-  
-    return [...(INITIAL_PICTURES_PORTRAIT_2.map((p) => {
-      const count = seen.get(p.id) ?? 0;
-      seen.set(p.id, count + 1);
-  
-      // if it's the first one, keep original id
-      if (count === 0) return p;
-  
-      // if duplicate, add suffix
-      return { ...p, id: `${p.id}-${count + 1}` };
-    })), ]
-  });
+  const [pictures, setPictures] = React.useState<PictureShape[]>(INITIAL_PICTURES_PORTRAIT_2);
 
   const handleExport = () => {
     if (stageRef.current) {

@@ -1,5 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button } from '../ui/button';
+import Canvas from './canvas';
+import { useEditorStore } from '@/lib/zustand/feature/editor';
 
 const COLORS = [
   { name: 'Black', value: '#000000' },
@@ -9,7 +11,8 @@ const COLORS = [
   { name: 'Green', value: '#10B981' },
   { name: 'Yellow', value: '#F59E0B' },
   { name: 'Purple', value: '#8B5CF6' },
-  { name: 'Pink', value: '#EC4899' },
+  { name: 'Pink', value: '#d28383' },
+  
 ];
 
 interface TextElement {
@@ -23,9 +26,14 @@ interface TextElement {
 export function Editor() {
   const [showGrid, setShowGrid] = useState(true);
   const [backgroundColor, setBackgroundColor] = useState('#FFFFFF');
+  const {setBgColor} = useEditorStore((state) => state);
   const [textElements, setTextElements] = useState<TextElement[]>([
     { id: '1', text: 'Your Event Name', color: '#000000', x: 50, y: 30 }
   ]);
+
+  useEffect((() => {
+    setBgColor(backgroundColor)
+  }), [backgroundColor])
 
   const addText = () => {
     const newElement: TextElement = {
@@ -39,9 +47,9 @@ export function Editor() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-white">
+    <div className="!min-h-screen overflow-hidden flex flex-col bg-white ">
       {/* Header */}
-      <header className="border-b border-gray-300 py-4">
+      <header className="z-50 bg-white border-b border-gray-300 py-4">
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
           <div className="text-black">Photoble Editor</div>
           <div className="flex gap-3">
@@ -59,9 +67,9 @@ export function Editor() {
       </header>
 
       {/* Main Editor Area */}
-      <div className="flex-1 flex">
+      <div className="flex-1 flex min-h-full">
         {/* Left Toolbar */}
-        <aside className="w-64 border-r border-gray-300 p-6 bg-white">
+        <aside className="z-50 w-64 border-r border-gray-300 p-6 bg-white">
           <div className="space-y-6">
             {/* Background Color */}
             <div>
@@ -115,57 +123,13 @@ export function Editor() {
         </aside>
 
         {/* Canvas Area */}
-        <main className="flex-1 p-12 bg-gray-50">
+        <main className="max-h-full flex-1 bg-gray-100">
           <div className="max-w-4xl mx-auto">
-            <div 
-              className="relative aspect-[4/3] border-2 border-gray-300 rounded-lg overflow-hidden shadow-lg"
-              style={{ backgroundColor }}
-            >
-              {/* Grid Overlay */}
-              {showGrid && (
-                <div 
-                  className="absolute inset-0 pointer-events-none"
-                  style={{
-                    backgroundImage: `
-                      linear-gradient(to right, rgba(0,0,0,0.1) 1px, transparent 1px),
-                      linear-gradient(to bottom, rgba(0,0,0,0.1) 1px, transparent 1px)
-                    `,
-                    backgroundSize: '40px 40px'
-                  }}
-                />
-              )}
-
-              {/* Text Elements */}
-              {textElements.map((element) => (
-                <div
-                  key={element.id}
-                  className="absolute cursor-move"
-                  style={{
-                    left: `${element.x}%`,
-                    top: `${element.y}%`,
-                    transform: 'translate(-50%, -50%)',
-                    color: element.color
-                  }}
-                >
-                  <div className="px-4 py-2 hover:outline hover:outline-2 hover:outline-blue-500 rounded">
-                    {element.text}
-                  </div>
-                </div>
-              ))}
-
-              {/* Center Guidelines */}
-              {showGrid && (
-                <>
-                  <div className="absolute left-1/2 top-0 bottom-0 w-px bg-red-400 opacity-30" />
-                  <div className="absolute top-1/2 left-0 right-0 h-px bg-red-400 opacity-30" />
-                </>
-              )}
-            </div>
-
+            <Canvas />
             {/* Canvas Info */}
-            <div className="mt-4 text-center text-gray-600">
+            {/* <div className="mt-4 text-center text-gray-600">
               <p>4:3 Aspect Ratio • Photo Booth Template</p>
-            </div>
+            </div> */}
           </div>
         </main>
       </div>
