@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
 import { useSupabase, useUserInfo } from '@/lib/supabase/hooks';
 import { useNavigate } from '@tanstack/react-router';
-import CreateTemplateDialog from './template-creation-dialog';
+import CreateTemplateDialog from './template-creation/template-creation-dialog';
 import { useState } from 'react';
 
 const MOCK_TEMPLATES = [

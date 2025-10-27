@@ -1,9 +1,11 @@
 import { Rect } from 'react-konva';
 import { useRef, useState, useCallback, useEffect } from 'react';
-import { PAPER_HEIGHT, PAPER_WIDTH, Picture } from '../editor-poc';
-import { KLayer, KStage } from '../editor-poc/lib';
+import { PAPER_HEIGHT, PAPER_WIDTH, Picture } from '../../editor-poc';
+import { KLayer, KStage } from '../../editor-poc/lib';
 import { useEditorStore } from '@/lib/zustand/feature/editor';
 import { ZoomToolbar } from './zoom-toolbar';
+import { EditorGuides } from '@/components/dashboard/template-creation/editor-guides';
+import { AlignmentGuides } from '@/components/dashboard/template-creation/alignment-guides';
 
 function Canvas() {
   const stageRef = useRef<any>(null);
@@ -23,7 +25,11 @@ function Canvas() {
     bgPicture,
     enableSnapping,
     setOnChangePicture,
+    showGrid,
+    showMargins,
+    alignmentGuides,
     setOnChangeBgPicture,
+    setAlignmentGuides,
   } = useEditorStore((state) => state);
 
   // 👇 Detect spacebar press/release
@@ -50,7 +56,14 @@ function Canvas() {
 
   const checkDeselect = (e: any) => {
     const clickedOnEmpty = e.target === e.target.getStage();
-    if (clickedOnEmpty) setSelectedId(null);
+    if (clickedOnEmpty) {
+      setSelectedId(null);
+      setAlignmentGuides({}); // Clear alignment guides when deselecting
+    }
+  };
+
+  const handleSnapChange = (snapResult: any) => {
+    setAlignmentGuides(snapResult.alignmentGuides || {});
   };
 
   // 👇 Zoom (wheel)
@@ -116,6 +129,12 @@ function Canvas() {
         >
           <KLayer>
             <Rect width={PAPER_WIDTH} height={PAPER_HEIGHT} fill={bgColor} />
+            <EditorGuides showGrid={showGrid} showMargins={showMargins} />
+            <AlignmentGuides 
+              verticalGuide={alignmentGuides.vertical}
+              horizontalGuide={alignmentGuides.horizontal}
+              showGuides={enableSnapping}
+            />
 
             {bgPicture && (
               <Picture
@@ -128,6 +147,7 @@ function Canvas() {
                   (p) => p.id !== pictureTemplate[0].id
                 )}
                 enableSnapping={enableSnapping}
+                onSnapChange={handleSnapChange}
               />
             )}
 
@@ -142,6 +162,7 @@ function Canvas() {
                   onChange={(newAttrs) => setOnChangePicture(newAttrs)}
                   otherShapes={pictureTemplate.filter((p) => p.id !== pic.id)}
                   enableSnapping={enableSnapping}
+                  onSnapChange={handleSnapChange}
                 />
               ))}
           </KLayer>

@@ -18,7 +18,7 @@ export type State = {
   showGrid: boolean;
   showMargins: boolean;
   enableSnapping: boolean;
-  alignmentGuides: boolean;
+  alignmentGuides: { vertical?: number; horizontal?: number };
   pictureTemplate: PictureTemplate[];
   bgPicture?: PictureTemplate;
   templateName: string;
@@ -40,7 +40,7 @@ export type Actions = {
   setShowGrid: (show: boolean) => void;
   setShowMargins: (show: boolean) => void;
   setEnableSnapping: (enable: boolean) => void;
-  setAlignmentGuides: (show: boolean) => void;
+  setAlignmentGuides: (show: State['alignmentGuides']) => void;
 
   // Template actions
   setPictureTemplate: (pictures: PictureTemplate[]) => void;
@@ -63,10 +63,10 @@ export type Actions = {
 const Initial_Values: State = {
   bgColor: "#fff",
   selectedId: null,
-  showGrid: false,
-  showMargins: false,
-  enableSnapping: false,
-  alignmentGuides: false,
+  showGrid: true,
+  showMargins: true,
+  enableSnapping: true,
+  alignmentGuides: {},
   pictureTemplate: INITIAL_PICTURES_LANDSCAPE_4,
   bgPicture: INITIAL_PICTURES_PORTRAIT_2.find(p => p.id === "pic-background"),
   templateName: "",

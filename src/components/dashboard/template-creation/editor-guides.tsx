@@ -1,6 +1,6 @@
 import React from 'react';
 import { Line } from 'react-konva';
-import { PAPER_WIDTH, PAPER_HEIGHT, EDITOR_MARGIN, GRID_SIZE, SHOW_GRID, SHOW_MARGINS } from './constants';
+import { PAPER_WIDTH, PAPER_HEIGHT, EDITOR_MARGIN, GRID_SIZE, SHOW_GRID, SHOW_MARGINS } from '../../editor-poc/constants';
 
 // Relaxed component aliases to avoid JSX typing conflicts from react-konva types
 const KLine = Line as unknown as React.ComponentType<any>;

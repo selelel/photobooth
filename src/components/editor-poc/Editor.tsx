@@ -1,8 +1,8 @@
 import React, { useState, useRef } from 'react';
 import { Stage, Layer, Rect } from 'react-konva';
 import { Picture } from './Picture';
-import { EditorGuides } from './EditorGuides';
-import { AlignmentGuides } from './AlignmentGuides';
+import { EditorGuides } from '../dashboard/template-creation/editor-guides';
+import { AlignmentGuides } from '../dashboard/template-creation/alignment-guides';
 import { 
   PAPER_WIDTH, 
   PAPER_HEIGHT, 
