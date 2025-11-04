@@ -94,7 +94,7 @@ export function Editor() {
       console.log(result)
 
       // Access Zustand store
-      const { orientation } = useEditorStore.getState();
+      const { orientation, setBgPicture } = useEditorStore.getState();
 
       // Load image to read intrinsic dimensions
       const img = new Image();
@@ -109,14 +109,14 @@ export function Editor() {
 
         if (isBackground) {
           const bgPicture = {
-            id: 'bg-picture',
+            id: 'pic-background',
             src: result,
             x: 0,
             y: 0,
             width: bgWidth,
             height: bgHeight,
           };
-          // setBgPicture(bgPicture);
+          setBgPicture(bgPicture);
           setPictureTemplate([bgPicture, ...pictureTemplate]);
         } else {
           // Scale added picture to a sensible default width, keeping aspect ratio

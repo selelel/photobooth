@@ -133,20 +133,13 @@ function Canvas() {
         >
           <KLayer>
             <Rect width={PAPER_WIDTH} height={PAPER_HEIGHT} fill={bgColor} />
-            <EditorGuides showGrid={showGrid} showMargins={showMargins} orientation={orientation} />
-            <AlignmentGuides 
-              verticalGuide={alignmentGuides.vertical}
-              horizontalGuide={alignmentGuides.horizontal}
-              showGuides={enableSnapping}
-              orientation={orientation}
-            />
 
             {bgPicture && (
               <Picture
-                key={pictureTemplate[0].id}
-                shapeProps={pictureTemplate[0]}
-                isSelected={selectedId === pictureTemplate[0].id}
-                onSelect={() => setSelectedId(pictureTemplate[0].id)}
+                key={bgPicture.id}
+                shapeProps={bgPicture}
+                isSelected={selectedId === bgPicture.id}
+                onSelect={() => setSelectedId(bgPicture.id)}
                 onChange={(newAttrs) => setOnChangeBgPicture(newAttrs)}
                 otherShapes={pictureTemplate.filter(
                   (p) => p.id !== pictureTemplate[0].id
@@ -155,6 +148,14 @@ function Canvas() {
                 onSnapChange={handleSnapChange}
               />
             )}
+
+            <EditorGuides showGrid={showGrid} showMargins={showMargins} orientation={orientation} />
+            <AlignmentGuides 
+              verticalGuide={alignmentGuides.vertical}
+              horizontalGuide={alignmentGuides.horizontal}
+              showGuides={enableSnapping}
+              orientation={orientation}
+            />
 
             {pictureTemplate
               .filter((e) => e.id !== 'pic-background')
