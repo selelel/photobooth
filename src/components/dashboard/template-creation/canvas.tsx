@@ -1,6 +1,6 @@
 import { Rect } from 'react-konva';
 import { useRef, useState, useCallback, useEffect } from 'react';
-import { PAPER_HEIGHT, PAPER_WIDTH, Picture } from '../../editor-poc';
+import { getPaperDimensions, Picture } from '../../editor-poc';
 import { KLayer, KStage } from '../../editor-poc/lib';
 import { useEditorStore } from '@/lib/zustand/feature/editor';
 import { ZoomToolbar } from './zoom-toolbar';
@@ -30,7 +30,11 @@ function Canvas() {
     alignmentGuides,
     setOnChangeBgPicture,
     setAlignmentGuides,
+    orientation,
   } = useEditorStore((state) => state);
+  console.log("canvas", bgPicture)
+
+  const { width: PAPER_WIDTH, height :PAPER_HEIGHT} = getPaperDimensions(orientation);
 
   // 👇 Detect spacebar press/release
   useEffect(() => {
@@ -129,11 +133,12 @@ function Canvas() {
         >
           <KLayer>
             <Rect width={PAPER_WIDTH} height={PAPER_HEIGHT} fill={bgColor} />
-            <EditorGuides showGrid={showGrid} showMargins={showMargins} />
+            <EditorGuides showGrid={showGrid} showMargins={showMargins} orientation={orientation} />
             <AlignmentGuides 
               verticalGuide={alignmentGuides.vertical}
               horizontalGuide={alignmentGuides.horizontal}
               showGuides={enableSnapping}
+              orientation={orientation}
             />
 
             {bgPicture && (

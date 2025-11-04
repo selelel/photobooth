@@ -8,14 +8,16 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { useEditorStore } from '@/lib/zustand/feature/editor';
+import { getInitialPictures } from '@/components/editor-poc';
+import { useNavigate } from '@tanstack/react-router';
 
 // Form validation schema
 const formSchema = z.object({
   templateName: z.string().min(1, 'Template name is required'),
-  photoCount: z.enum(['1x', '2x', '3x', '4x']),
+  photoCount: z.enum(['1', '2', '3', '4']),
   orientation: z.enum(['portrait', 'landscape']),
   eventName: z.string().min(1, 'Event name is required'),
-  logoFile: z.instanceof(File).optional(),
 });
 
 type FormData = z.infer<typeof formSchema>;
@@ -26,29 +28,28 @@ interface CreateTemplateDialogProps {
 }
 
 export default function CreateTemplateDialog({ open, onOpenChange }: CreateTemplateDialogProps) {
+  const navigate = useNavigate()
+  const {setOrientation, setTemplateName, setEventName, setPictureTemplate } = useEditorStore((state) => state);
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       templateName: '',
-      photoCount: '1x',
+      photoCount: "1",
       orientation: 'portrait',
       eventName: '',
-      logoFile: undefined,
     },
   });
 
+
+
   const onSubmit = (data: FormData) => {
-    console.log('Form data:', data);
+    setOrientation(data.orientation);
+    setTemplateName(data.templateName);
+    setEventName(data.eventName);
+    setPictureTemplate(getInitialPictures(Number(data.photoCount), data.orientation));
+    navigate({ to: '/dashboard/template-creation' });
     form.reset();
     onOpenChange(false);
-  };
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, onChange: (file: File | undefined) => void) => {
-    if (e.target.files && e.target.files[0]) {
-      onChange(e.target.files[0]);
-    } else {
-      onChange(undefined);
-    }
   };
 
   return (
@@ -90,13 +91,13 @@ export default function CreateTemplateDialog({ open, onOpenChange }: CreateTempl
                     <FormControl>
                       <RadioGroup
                         onValueChange={field.onChange}
-                        value={field.value}
+                        value={field.value.toString()}
                         className="flex flex-col space-y-1"
                       >
-                        {['1x', '2x', '3x', '4x'].map((value) => (
+                        {[1,2,3,4].map((value) => (
                           <div key={value} className="flex items-center space-x-2">
-                            <RadioGroupItem value={value} id={value} />
-                            <Label htmlFor={value}>{value.replace('x', '')} photo{value !== '1x' && 's'}</Label>
+                            <RadioGroupItem value={value.toString()} id={value.toString()} />
+                            <Label htmlFor={value.toString()}>{value} photo{value !== 1 && 's'}</Label>
                           </div>
                         ))}
                       </RadioGroup>
@@ -153,38 +154,6 @@ export default function CreateTemplateDialog({ open, onOpenChange }: CreateTempl
               />
 
               {/* Event Logo */}
-              <FormField
-                control={form.control}
-                name="logoFile"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-black">Event Logo (Optional)</FormLabel>
-                    <FormControl>
-                      <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-gray-400 transition-colors">
-                        <input
-                          id="logo"
-                          type="file"
-                          accept="image/*"
-                          onChange={(e) => handleFileChange(e, field.onChange)}
-                          className="hidden"
-                        />
-                        <label htmlFor="logo" className="cursor-pointer">
-                          <Upload className="w-8 h-8 mx-auto mb-2 text-gray-400" />
-                          {field.value ? (
-                            <p className="text-black">{field.value.name}</p>
-                          ) : (
-                            <>
-                              <p className="text-gray-600">Click to upload logo</p>
-                              <p className="text-gray-400 mt-1">PNG, JPG, SVG</p>
-                            </>
-                          )}
-                        </label>
-                      </div>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
             </div>
 
             {/* Footer Buttons */}

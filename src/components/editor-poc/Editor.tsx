@@ -107,14 +107,13 @@ export const Editor = () => {
           <Rect width={PAPER_WIDTH} height={PAPER_HEIGHT} fill={bgColor} />
           
           {/* Editor guides (grid and margins) */}
-          <EditorGuides showGrid={showGrid} showMargins={showMargins} />
+          <EditorGuides showGrid={showGrid} showMargins={showMargins} orientation={'portrait'} />
           
           {/* Alignment guides for snapping feedback */}
           <AlignmentGuides 
             verticalGuide={alignmentGuides.vertical}
             horizontalGuide={alignmentGuides.horizontal}
-            showGuides={enableSnapping}
-          />
+            showGuides={enableSnapping} orientation={'portrait'}/>
           
           <Picture
               key={pictures[0].id}

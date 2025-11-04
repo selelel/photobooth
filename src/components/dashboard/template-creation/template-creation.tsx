@@ -13,6 +13,7 @@ import {
   FormLabel,
   FormControl,
 } from '@/components/ui/form';
+import { getPaperDimensions } from '@/components/editor-poc';
 
 // 🎨 Background color options
 const COLORS = [
@@ -46,7 +47,7 @@ const TemplateSchema = z.object({
 type TemplateFormValues = z.infer<typeof TemplateSchema>;
 
 export function Editor() {
-  const { setBgColor, pictureTemplate, setPictureTemplate, addPicture, setBgPicture } =
+  const { setBgColor, setShowGrid, setShowMargins, setPictureTemplate, pictureTemplate} =
     useEditorStore((state) => state);
 
   // 🧠 Initialize form
@@ -54,78 +55,96 @@ export function Editor() {
     resolver: zodResolver(TemplateSchema) as any,
     defaultValues: {
       backgroundColor: '#FFFFFF',
-      showGrid: true,
-      showMargins: true,
+      showGrid: false,
+      showMargins: false,
       backgroundFile: null,
       pictureFile: null,
     },
   });
 
-  const [backgroundColor, backgroundFile] = form.watch(['backgroundColor', 'backgroundFile']);
-
-  // Todo: find the base64, just store it then upload in aws-amplify then use it in the app.
+  const { backgroundColor, backgroundFile, showGrid, showMargins } = form.watch();
   console.log(backgroundFile)
 
   useEffect(() => {
-    setBgPicture({
-      id: 'bg-picture',
-      x: 0,
-      y: 0,
-      width: 0,
-      height: 0
-    });
-  }, [backgroundColor, setBgColor]);
+    setShowGrid(showGrid);
+    setShowMargins(showMargins);
+  }, [showGrid, showMargins]);
+
+  // useEffect(() => {
+  //   setBgPicture({
+  //     id: 'bg-picture',
+  //     x: 0,
+  //     y: 0,
+  //     width: 1000,
+  //     height: 1000
+  //   });
+  // }, [backgroundColor, setBgColor]);
 
   // 🔄 Update Zustand background color whenever form value changes
   useEffect(() => {
     setBgColor(backgroundColor);
   }, [backgroundColor, setBgColor]);
 
-  // 📸 Handle image uploads from form-controlled file inputs
-  const handleFileRead = (
-    file: File,
-    isBackground: boolean
-  ) => {
+  function handleFileRead(file: File, isBackground: boolean) {
     const reader = new FileReader();
+  
     reader.onload = (event) => {
-      const dataUrl = event.target?.result as string;
-      if (isBackground) {
-        const bgPic = pictureTemplate.find((p) => p.id === 'pic-background');
-        if (bgPic) {
-          setBgPicture({ ...bgPic, src: dataUrl });
-          setPictureTemplate(
-            pictureTemplate.map((p) =>
-              p.id === 'pic-background' ? { ...p, src: dataUrl } : p
-            )
-          );
-        }
-      } else {
-        const newPicture = {
-          id: `pic-${Date.now()}`,
-          x: 100,
-          y: 100,
-          width: 200,
-          height: 200,
-          src: dataUrl,
-          label: 'New Picture',
-        };
-        addPicture(newPicture);
-      }
-    };
-    reader.readAsDataURL(file);
-  };
+      const result = event.target?.result;
+      if (!result || typeof result !== 'string') return;
+      console.log(result)
 
-  // 🧾 On Submit
-  const onSubmit = (values: TemplateFormValues) => {
-    if (values.backgroundFile) handleFileRead(values.backgroundFile, true);
-    if (values.pictureFile) handleFileRead(values.pictureFile, false);
-    console.log('✅ Template Saved:', values);
-  };
+      // Access Zustand store
+      const { orientation } = useEditorStore.getState();
+
+      // Load image to read intrinsic dimensions
+      const img = new Image();
+      img.onload = () => {
+        const naturalWidth = img.naturalWidth || img.width;
+        const naturalHeight = img.naturalHeight || img.height;
+        const {width:PAPER_WIDTH, height:PAPER_HEIGHT} = getPaperDimensions(orientation)
+        // Scale to fit within paper while keeping aspect ratio
+        const bgScale = Math.min(PAPER_WIDTH / naturalWidth, PAPER_HEIGHT / naturalHeight);
+        const bgWidth = Math.round(naturalWidth * bgScale);
+        const bgHeight = Math.round(naturalHeight * bgScale);
+
+        if (isBackground) {
+          const bgPicture = {
+            id: 'bg-picture',
+            src: result,
+            x: 0,
+            y: 0,
+            width: bgWidth,
+            height: bgHeight,
+          };
+          // setBgPicture(bgPicture);
+          setPictureTemplate([bgPicture, ...pictureTemplate]);
+        } else {
+          // Scale added picture to a sensible default width, keeping aspect ratio
+          // const targetWidth = DEFAULT_PICTURE_WIDTH;
+          // const picScale = targetWidth / naturalWidth;
+          // const picWidth = Math.round(naturalWidth * picScale);
+          // const picHeight = Math.round(naturalHeight * picScale);
+
+          // addPicture({
+          //   id: `picture-${Date.now()}`,
+          //   src: result,
+          //   x: 100,
+          //   y: 100,
+          //   width: picWidth,
+          //   height: picHeight,
+          // });
+        }
+      };
+      img.src = result;
+    };
+  
+    reader.readAsDataURL(file);
+  }
+  
 
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit(onSubmit)}
         className="!min-h-screen overflow-hidden flex flex-col bg-white"
       >
         {/* Header */}

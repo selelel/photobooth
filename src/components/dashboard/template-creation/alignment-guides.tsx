@@ -1,6 +1,6 @@
 import React from 'react';
 import { Line } from 'react-konva';
-import { PAPER_WIDTH, PAPER_HEIGHT } from '../../editor-poc/constants';
+import { getPaperDimensions } from '../../editor-poc/constants';
 
 // Relaxed component aliases to avoid JSX typing conflicts from react-konva types
 const KLine = Line as unknown as React.ComponentType<any>;
@@ -9,16 +9,19 @@ interface AlignmentGuidesProps {
   verticalGuide?: number;
   horizontalGuide?: number;
   showGuides?: boolean;
+  orientation: 'portrait' | 'landscape';
 }
 
 export const AlignmentGuides = ({ 
   verticalGuide, 
   horizontalGuide, 
-  showGuides = true 
+  showGuides = true,
+  orientation
 }: AlignmentGuidesProps) => {
   if (!showGuides || (!verticalGuide && !horizontalGuide)) {
     return null;
   }
+  const { width: PAPER_WIDTH, height :PAPER_HEIGHT} = getPaperDimensions(orientation);
 
   return (
     <>
